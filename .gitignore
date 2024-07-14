@@ -1,1 +1,6 @@
 .DS_Store
+plantuml.jar
+files/input/*
+!files/input/.gitkeep
+files/output/*
+!files/output/.gitkeep

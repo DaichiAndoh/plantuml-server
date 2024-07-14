@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/style.css">
+  <title>markdown to html</title>
+</head>
+<body>
+  <h1>PlantUML Preview</h1>
+  <div id="container">
+    <div id="editor"></div>
+    <div id="preview">
+      <div id="preview-operator-wrapper">
+        <label for="format">image format</label>
+        <select id="format">
+          <option value="png">PNG</option>
+          <option value="svg">SVG</option>
+        </select>
+        <button id="download-btn" disabled>Download</button>
+      </div>
+      <div id="preview-img-wrapper"></div>
+    </div>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.20.0/min/vs/loader.min.js"></script>
+  <script src="js/editor.js"></script>
+</body>
+</html>
