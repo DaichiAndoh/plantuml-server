@@ -11,6 +11,7 @@ $req = json_decode($req_json, true);
 
 $uml = $req['uml'];
 $format = $req['format'];
+$format = ($format === 'png' || $format === 'svg') ? $format : 'png';
 $download = $req['download'];
 
 // UMLファイル作成
