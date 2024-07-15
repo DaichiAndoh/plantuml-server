@@ -61,11 +61,12 @@ if ($success) {
     echo json_encode(['success' => $success, 'image' => $imageSrc]);
   }
 
-  // 画像ファイル削除
-  exec(sprintf("rm %s", $inputFilePath));
-  exec(sprintf("rm -rf %s", $outputDirPath));
 } else {
   header('Content-Type: application/json');
   echo json_encode(['success' => $success]);
 }
+
+// 画像ファイル削除
+exec(sprintf("[ -e \"%s\" ] && rm %s", $inputFilePath, $inputFilePath));
+exec(sprintf("[ -d \"%s\" ] && rm -rf %s", $outputDirPath, $outputDirPath));
 ?>
