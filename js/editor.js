@@ -6,6 +6,7 @@ require(['vs/editor/editor.main'], function() {
     value: '',
     language: 'markdown'
   });
+
   editor.getModel().onDidChangeContent(debounce(() => {
     const content = editor.getValue();
     resetPreview();
@@ -24,17 +25,6 @@ require(['vs/editor/editor.main'], function() {
 });
 
 // functions
-function debounce(fn, wait) {
-  let timeout;
-  return function(...args) {
-    const context = this;
-    clearTimeout(timeout);
-    timeout = setTimeout(() => {
-      fn.apply(context, args);
-    }, wait);
-  }
-}
-
 async function post(uml, format, download) {
   try {
     const res = await fetch('/converter.php', {
@@ -63,40 +53,26 @@ async function convert(uml, format = 'png', download = false) {
       const base64ImageData = resData.image;
       const blob = base64toBlob(base64ImageData);
       const imageUrl = URL.createObjectURL(blob);
-
-      const a = document.createElement('a');
-      a.href = imageUrl;
-      a.download = `image.${format}`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
+      downloadImage(imageUrl, format);
     } else {
-      const img = document.createElement('img');
-      img.src = resData.image;
-      img.style.objectFit = 'contain';
+      const img = createPreviewImageEl(resData.image);
       previewEl.appendChild(img);
     }
   } else {
-    const p = document.createElement('p');
-    p.innerText = 'Error!';
-    p.style.color = 'red';
+    const p = createErrorTextEl();
     previewEl.appendChild(p);
   }
 }
 
-function setDlBtnDisabled(disabled) {
-  const button = document.getElementById('download-btn');
-  button.disabled = disabled;
-}
-
-function resetPreview() {
-  const previewEl = document.getElementById('preview-img-wrapper');
-  previewEl.innerHTML = '';
-}
-
-function getDownloadFormatValue() {
-  const selectBox = document.getElementById('format');
-  return selectBox.value;
+function debounce(fn, wait) {
+  let timeout;
+  return function(...args) {
+    const context = this;
+    clearTimeout(timeout);
+    timeout = setTimeout(() => {
+      fn.apply(context, args);
+    }, wait);
+  }
 }
 
 function base64toBlob(base64Data) {
@@ -107,4 +83,42 @@ function base64toBlob(base64Data) {
   }
   const byteArray = new Uint8Array(byteNumbers);
   return new Blob([byteArray]);
+}
+
+function getDownloadFormatValue() {
+  const selectBox = document.getElementById('format');
+  return selectBox.value;
+}
+
+function setDlBtnDisabled(disabled) {
+  const button = document.getElementById('download-btn');
+  button.disabled = disabled;
+}
+
+function downloadImage(imageUrl, format) {
+  const a = document.createElement('a');
+  a.href = imageUrl;
+  a.download = `image.${format}`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+}
+
+function createPreviewImageEl(imageSrc) {
+  const img = document.createElement('img');
+  img.src = imageSrc;
+  img.style.objectFit = 'contain';
+  return img;
+}
+
+function createErrorTextEl() {
+  const p = document.createElement('p');
+  p.innerText = 'Error!';
+  p.style.color = 'red';
+  return p;
+}
+
+function resetPreview() {
+  const previewEl = document.getElementById('preview-img-wrapper');
+  previewEl.innerHTML = '';
 }
