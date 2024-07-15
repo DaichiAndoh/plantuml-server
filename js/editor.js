@@ -25,14 +25,14 @@ require(['vs/editor/editor.main'], function() {
 });
 
 // functions
-async function post(uml, format, download) {
+async function post(umlText, format, download) {
   try {
     const res = await fetch('/converter.php', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ uml, format, download }),
+      body: JSON.stringify({ umlText, format, download }),
     });
 
     const resData = await res.json();
@@ -42,8 +42,8 @@ async function post(uml, format, download) {
   };
 }
 
-async function convert(uml, format = 'png', download = false) {
-  const resData = await post(uml, format, download);
+async function convert(umlText, format = 'png', download = false) {
+  const resData = await post(umlText, format, download);
   const previewEl = document.getElementById('preview-img-wrapper');
 
   if (resData.success) {

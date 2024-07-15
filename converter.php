@@ -9,13 +9,13 @@ $outputDirPath = sprintf("files/output/%s/", $outputUserDir);
 $req_json = file_get_contents('php://input');
 $req = json_decode($req_json, true);
 
-$uml = $req['uml'];
+$umlText = $req['umlText'];
 $format = $req['format'];
 $format = ($format === 'png' || $format === 'svg') ? $format : 'png';
 $download = $req['download'];
 
 // UMLファイル作成
-file_put_contents($inputFilePath, $uml, LOCK_EX);
+file_put_contents($inputFilePath, $umlText, LOCK_EX);
 
 // UMLファイルから画像ファイル作成
 $command = sprintf(
