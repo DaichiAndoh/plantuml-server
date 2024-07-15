@@ -1,7 +1,9 @@
 <?php
-$UML_FILE_PATH = './files/input/uml.txt';
-$UML_IMAGE_OUTPUT_DIR_PATH = '../output';
-$UML_IMAGE_OUTPUT_FILE_PATH = './files/output/[fileName]';
+$id = rand();
+$inputFileName = $id . '.txt';
+$inputFilePath = 'files/input/' . $inputFileName;
+$outputUserDir = $id;
+$outputDirPath = sprintf("files/output/%s/", $outputUserDir);
 
 // リクエストデータ取得
 $req_json = file_get_contents('php://input');
@@ -12,13 +14,13 @@ $format = $req['format'];
 $download = $req['download'];
 
 // UMLファイル作成
-file_put_contents($UML_FILE_PATH, $uml, LOCK_EX);
+file_put_contents($inputFilePath, $uml, LOCK_EX);
 
 // UMLファイルから画像ファイル作成
 $command = sprintf(
   "java -jar plantuml.jar %s -o \"%s\" -%s -failfast2 2>&1",
-  $UML_FILE_PATH,
-  $UML_IMAGE_OUTPUT_DIR_PATH,
+  $inputFilePath,
+  str_replace('files', '..', $outputDirPath),
   $format  
 );
 $output = null;
@@ -39,13 +41,14 @@ foreach ($output as $line) {
 
 // レスポンス
 if ($success) {
-  $command = 'ls ./files/output';
+  $command = 'ls ' . $outputDirPath;
   $output = null;
   $retval = null;
   exec($command, $output, $retval);
-  $fileName = $output[0];
+  $outputFileName = $output[0];
+  $outputFilePath = $outputDirPath . $output[0];
 
-  $imageData = file_get_contents(str_replace('[fileName]', $fileName , $UML_IMAGE_OUTPUT_FILE_PATH));
+  $imageData = file_get_contents($outputFilePath);
   $base64 = base64_encode($imageData);
 
   if ($download) {
@@ -56,11 +59,12 @@ if ($success) {
     header('Content-Type: application/json');
     echo json_encode(['success' => $success, 'image' => $imageSrc]);
   }
+
+  // 画像ファイル削除
+  exec(sprintf("rm %s", $inputFilePath));
+  exec(sprintf("rm -rf %s", $outputDirPath));
 } else {
   header('Content-Type: application/json');
   echo json_encode(['success' => $success]);
 }
-
-// 画像ファイル削除
-exec('rm ./files/output/*');
 ?>
