@@ -5,12 +5,22 @@
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black)
 ![PHP](https://img.shields.io/badge/PHP-777BB4?logo=php&logoColor=white)
 
+## URL
+
+https://pus.d-andoh.com
+
 ## About
 
 このプログラムは、PlantUMLのテキストをUML図にリアルタイムで変換し、プレビュー表示します。
 変換されたUML図は、PNG、またはSVG形式でダウンロードすることも可能です。
 
-## Usage
+## Demo
+
+![demo](./docs/demo.gif)
+
+## Development
+
+### Set Up
 
 1. PlantUML CLIプログラムダウンロード
 
@@ -24,11 +34,7 @@ $ cd plantuml-server
 $ php -S localhost:8000
 ```
 
-## Demo
-
-![demo](./docs/demo.gif)
-
-## References
+### References
 
 - [PlantUML](https://plantuml.com/ja/)
 - [PlantUML CLI](https://plantuml.com/ja/command-line)
