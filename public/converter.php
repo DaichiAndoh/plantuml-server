@@ -1,9 +1,9 @@
 <?php
 $id = rand();
 $inputFileName = $id . '.txt';
-$inputFilePath = 'files/input/' . $inputFileName;
+$inputFilePath = '../files/input/' . $inputFileName;
 $outputUserDir = $id;
-$outputDirPath = sprintf("files/output/%s/", $outputUserDir);
+$outputDirPath = sprintf("../files/output/%s/", $outputUserDir);
 
 // リクエストデータ取得
 $req_json = file_get_contents('php://input');
@@ -19,9 +19,9 @@ file_put_contents($inputFilePath, $umlText, LOCK_EX);
 
 // UMLファイルから画像ファイル作成
 $command = sprintf(
-  "java -jar plantuml.jar %s -o \"%s\" -%s -failfast2 2>&1",
+  "java -jar ../plantuml.jar %s -o \"%s\" -%s -failfast2 2>&1",
   $inputFilePath,
-  str_replace('files', '..', $outputDirPath),
+  str_replace('../files', '..', $outputDirPath),
   $format  
 );
 $output = null;
