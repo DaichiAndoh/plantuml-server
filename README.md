@@ -7,7 +7,10 @@
 
 ## URL
 
-https://pus.d-andoh.com
+> [!WARNING]
+> 現在このURLは無効です。
+
+~~https://pus.d-andoh.com~~
 
 ## About
 
